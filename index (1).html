@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robescu14 | The Magical Realm</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #1c1b2d; color: white; margin: 0; padding: 0; }
+    header, footer { background: #2c2b3f; padding: 20px; text-align: center; }
+    nav a { margin: 0 10px; color: white; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+    section { margin-bottom: 60px; }
+    h2 { color: #e94e77; }
+    form input, form select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+    form button { background: #e94e77; padding: 10px 20px; border: none; color: white; border-radius: 5px; cursor: pointer; }
+    form button:hover { background: #d03b64; }
+    #rezultat.fade { opacity: 0; transition: opacity 1.2s ease-in-out; }
+    #rezultat.fade.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🔮 Robescu14 – The Magical Realm</h1>
+</header>
+
+<div class="container">
+  <section id="quiz">
+    <h2>🧪 Creează-ți băutura magică</h2>
+    <form onsubmit="handleSubmit(event)">
+      <label for="fruit">Fructul preferat:</label>
+      <select id="fruit">
+        <option value="">Alege...</option>
+        <option value="căpșună">🍓 Căpșună</option>
+        <option value="ananas">🍍 Ananas</option>
+        <option value="lămâie">🍋 Lămâie</option>
+        <option value="strugure">🍇 Strugure</option>
+      </select>
+
+      <label for="dessert">Desertul preferat:</label>
+      <select id="dessert">
+        <option value="">Alege...</option>
+        <option value="cheesecake">🍰 Cheesecake</option>
+        <option value="lava cake">🍫 Lava Cake</option>
+        <option value="biscuiți">🍪 Biscuiți</option>
+        <option value="înghețată">🍦 Înghețată</option>
+      </select>
+
+      <label for="alcohol">Baza preferată:</label>
+      <select id="alcohol">
+        <option value="">Alege...</option>
+        <option value="gin">🍸 Gin</option>
+        <option value="rom">🥃 Rom</option>
+        <option value="vodka">🍶 Vodka</option>
+        <option value="whiskey">🦬 Whiskey</option>
+      </select>
+
+      <label for="moment">Momentul preferat al zilei:</label>
+      <select id="moment">
+        <option value="">Alege...</option>
+        <option value="dimineața">🌅 Dimineața</option>
+        <option value="prânz">☀️ Prânz</option>
+        <option value="apus">🌇 Apus</option>
+        <option value="noaptea">🌙 Noaptea</option>
+      </select>
+
+      <label for="mood">Starea ta actuală:</label>
+      <select id="mood">
+        <option value="">Alege...</option>
+        <option value="energic">⚡ Energic(ă)</option>
+        <option value="relaxat">🌿 Relaxat(ă)</option>
+        <option value="misterios">🕯️ Misterios(ă)</option>
+        <option value="romantic">💘 Romantic(ă)</option>
+      </select>
+
+      <label for="masa">Numărul mesei tale:</label>
+      <input type="number" id="masa" placeholder="Ex: 12">
+
+      <button type="submit">🔮 Trimite spre alchimiști</button>
+    </form>
+
+    <div id="rezultat" class="fade" style="margin-top: 30px; background: #2a293d; padding: 20px; border-radius: 8px; display: none;"></div>
+  </section>
+</div>
+
+<footer>
+  <p>© 2025 Robescu14. Toate drepturile rezervate.</p>
+</footer>
+
+<script>
+  function handleSubmit(event) {
+    event.preventDefault();
+    const data = {
+      fruit: document.getElementById('fruit').value,
+      dessert: document.getElementById('dessert').value,
+      alcohol: document.getElementById('alcohol').value,
+      moment: document.getElementById('moment').value,
+      mood: document.getElementById('mood').value,
+      masa: document.getElementById('masa').value
+    };
+
+    if (Object.values(data).some(val => val === "")) {
+      alert("Te rugăm să completezi toate câmpurile pentru a continua.");
+      return;
+    }
+
+    const rezultat = document.getElementById('rezultat');
+    rezultat.className = 'fade';
+    rezultat.style.display = 'block';
+    rezultat.innerHTML = '<p style="text-align:center;">🔮 Se prepară băutura ta magică... așteaptă un moment...</p>';
+
+    fetch("https://script.google.com/macros/s/AKfycbwzEjU8XeWSRL4j8AvJyg7UnGdzHvngdWT2l0F8c0s5F4IGpnlZHgC9pnyAVYkERyk5/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(() => {
+      rezultat.innerHTML = `🍹 Băutura ta este inspirată de <strong>${data.fruit}</strong>, servită cu accente de <strong>${data.dessert}</strong>, pe bază de <strong>${data.alcohol}</strong>, creată special pentru o stare <strong>${data.mood}</strong> la ora <strong>${data.moment}</strong>.<br><br>🪄 Te rugăm să rămâi la masa <strong>#${data.masa}</strong>. Magia este în pregătire.`;
+      setTimeout(() => rezultat.classList.add('show'), 50);
+    })
+    .catch(err => {
+      rezultat.innerHTML = "❌ A apărut o eroare la trimiterea comenzii. Te rugăm să încerci din nou.";
+      setTimeout(() => rezultat.classList.add('show'), 50);
+    });
+  }
+</script>
+
+</body>
+</html>
